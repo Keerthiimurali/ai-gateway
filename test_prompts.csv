@@ -1,0 +1,21 @@
+prompt,label
+Hello,simple
+What is 2+2?,simple
+Tell me a joke,simple
+Good morning,simple
+How are you?,simple
+Explain how Python handles memory management,complex
+Write a function to reverse a linked list,complex
+Analyze the impact of AI on healthcare,complex
+Why is the sky blue?,simple
+Debug this code snippet in Java,complex
+Summarize the causes of World War II,complex
+What are the steps to train a neural network?,complex
+Explain recursion with an example,complex
+Generate a SQL query to join two tables,complex
+What is machine learning?,simple
+Give me the algorithm for binary search,complex
+Explain the difference between TCP and UDP,complex
+How does garbage collection work in Java?,complex
+What are the advantages of cloud computing?,complex
+Describe the process of DNA replication,complex
