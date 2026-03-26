@@ -24,7 +24,7 @@ Components: FastAPI Gateway, Routing Model, Cache Layer, Log Viewer
 
 # Setup
 Clone the repository
-git clone <https://github.com/keerthim-26/ai-gateway.git>
+git clone <https://github.com/Keerthiimurali/ai-gateway.git>
 
 Create a virtual environment
 python -m venv venv
