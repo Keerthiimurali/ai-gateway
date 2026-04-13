@@ -1,0 +1,51 @@
+prompt,label
+Hi,simple
+Hello,simple
+Good evening,simple
+How are you?,simple
+What is your name?,simple
+Tell me a joke,simple
+What is 5+3?,simple
+Who is the CEO of Google?,simple
+Define computer,simple
+What is Python?,simple
+Give me a fun fact,simple
+What is the capital of India?,simple
+Explain gravity in one line,simple
+What is water made of?,simple
+What is AI?,simple
+Say something motivational,simple
+What is 10 divided by 2?,simple
+Who invented the telephone?,simple
+What is HTML?,simple
+What is a variable?,simple
+Explain object-oriented programming in detail,complex
+Write a Python function to sort a list using merge sort,complex
+Design a REST API for a banking system,complex
+Compare SQL and NoSQL databases,complex
+Explain the lifecycle of a thread in Java,complex
+Write a program to detect cycles in a graph,complex
+Analyze the impact of artificial intelligence on education,complex
+Explain how blockchain works with an example,complex
+Generate a SQL query to find the second highest salary,complex
+Explain recursion with multiple examples,complex
+Write a FastAPI application with CRUD operations,complex
+Describe microservices architecture and its benefits,complex
+Explain the difference between TCP and UDP in detail,complex
+Build a machine learning model for classification,complex
+Explain backpropagation in neural networks,complex
+Write a Java program for multithreading,complex
+Design a scalable system for a chat application,complex
+Explain memory management in operating systems,complex
+Write a function to reverse a linked list,complex
+Compare supervised and unsupervised learning,complex
+Explain garbage collection in Java in detail,complex
+Design a database schema for an e-commerce platform,complex
+Explain normalization in databases with examples,complex
+Write a program to implement binary search tree,complex
+Analyze the causes of World War II,complex
+Explain cloud computing architecture,complex
+Write a program for Dijkstra's algorithm,complex
+Explain how APIs work internally,complex
+Design a recommendation system,complex
+Explain the CAP theorem in distributed systems,complex

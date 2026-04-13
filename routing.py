@@ -1,7 +1,14 @@
 import joblib
+import numpy as np
 
+# -------------------------------
+# LOAD TRAINED MODEL
+# -------------------------------
 model = joblib.load("routing_model.pkl")
 
+# -------------------------------
+# FEATURE DEFINITIONS
+# -------------------------------
 COMPLEX_KEYWORDS = [
     "explain", "analyze", "compare", "why", "how",
     "implement", "code", "algorithm", "debug",
@@ -11,46 +18,120 @@ COMPLEX_KEYWORDS = [
     "process", "difference"
 ]
 
-def routing_model(prompt: str):
+CODE_KEYWORDS = [
+    "code", "function", "program", "debug",
+    "algorithm", "implement", "script"
+]
 
+SIMPLE_PATTERNS = [
+    "how are you", "hello", "hi"
+]
+
+# Tuned threshold
+THRESHOLD = 0.65
+
+
+# -------------------------------
+# FEATURE EXTRACTION FUNCTION
+# -------------------------------
+def extract_features(prompt: str):
     prompt_lower = prompt.lower()
+
     word_count = len(prompt.split())
+    keyword_flag = int(any(word in prompt_lower for word in COMPLEX_KEYWORDS))
+    code_flag = int(
+        any(word in prompt_lower for word in CODE_KEYWORDS) or
+        any(symbol in prompt for symbol in ["def", "class", "{", "}", ";"])
+    )
+    simple_flag = int(any(pattern in prompt_lower for pattern in SIMPLE_PATTERNS))
+    question_flag = int("?" in prompt)
 
-    # STEP 0: SHORT →  FAST
-    if word_count <= 4:
-        return "fast", "Very short prompt → Fast model", 0.95
+    return [
+        word_count,
+        keyword_flag,
+        code_flag,
+        simple_flag,
+        question_flag
+    ]
 
-    # STEP 1: RULES 
-    if any(word in prompt_lower for word in ["debug", "algorithm", "code"]):
-        return "capable", "Code-critical task → Capable model", 0.95
-    
-    # STEP 2: ML probability
-    prob = model.predict_proba([prompt])[0][1]
 
-    # STEP 3: Features 
-    keyword_flag = any(word in prompt_lower for word in COMPLEX_KEYWORDS)
-    code_flag = any(symbol in prompt for symbol in ["def", "class", "{", "}", ";"])
+# -------------------------------
+# MAIN ROUTING FUNCTION
+# -------------------------------
+def routing_model(prompt: str):
+    prompt_lower = prompt.lower()
 
-    if word_count > 10:
+    # STEP 1: Extract features
+    features = extract_features(prompt)
+
+    # STEP 2: ML prediction
+    prob = model.predict_proba([features])[0][1]  # P(complex)
+
+    # STEP 3: Feature unpacking
+    word_count, keyword_flag, code_flag, simple_flag, question_flag = features
+
+    # STEP 4: Controlled tuning (light adjustments only)
+    if word_count > 12:
         prob += 0.05
+
     if keyword_flag:
-        prob += 0.05
-    if "?" in prompt:
-        prob += 0.01
+        prob += 0.05   # reduced (was 0.08)
+
     if code_flag:
-        prob += 0.15
+        prob += 0.15   # keep strong
 
-    prob = min(prob, 1.0)
+    if simple_flag:
+        prob -= 0.15   # stronger penalty for simple prompts
 
-    # STEP 4:THRESHOLD
-    decision = "capable" if prob > 0.8 else "fast"
+    # Clamp probability
+    prob = max(0.0, min(prob, 1.0))
 
-    # STEP 5: Reason
-    if decision == "fast":
-        reason = f"Low complexity ({prob:.2f}) → Fast model"
+    # -------------------------------
+    # STEP 5: SIGNALS (EXPLAINABILITY)
+    # -------------------------------
+    signals = []
+
+    if word_count > 12:
+        signals.append("long prompt")
+
+    if keyword_flag:
+        signals.append("complex keywords")
+
+    if code_flag:
+        signals.append("code/technical task")
+
+    if question_flag:
+        signals.append("question")
+
+    if simple_flag:
+        signals.append("simple pattern")
+
+    signal_text = ", ".join(signals) if signals else "no strong signals"
+
+    # -------------------------------
+    # STEP 6: CORRECT OVERRIDE LOGIC
+    # -------------------------------
+
+    # ✅ ONLY strict override cases
+    if code_flag:
+        decision = "capable"
+        reason = f"Override → Capable Model (code detected, score={prob:.2f})"
+
+    elif keyword_flag and prob >= 0.7:
+        decision = "capable"
+        reason = f"Override → Capable Model (high-confidence keywords, score={prob:.2f})"
+
+    elif prob > THRESHOLD:
+        decision = "capable"
+        reason = f"High complexity ({prob:.2f}) → Capable Model ({signal_text})"
+
     else:
-        reason = f"High complexity ({prob:.2f}) → Capable model"
+        decision = "fast"
+        reason = f"Low complexity ({prob:.2f}) → Fast Model ({signal_text})"
 
+    # -------------------------------
+    # STEP 7: CONFIDENCE
+    # -------------------------------
     confidence = prob if decision == "capable" else 1 - prob
 
-    return decision, reason, confidence
+    return decision, reason, confidence, signals

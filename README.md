@@ -7,7 +7,7 @@ The goal is to optimize cost, latency, and response quality.
 1) Fast Model: llama-3.1-8b-instant
 Used for simple queries, greetings, short answers
 
-2) Capable Model: gemini-3.1-flash-lite-preview
+2) Capable Model: gemini-2.0-flash (Google AI Studio free tier)
 Used for reasoning, coding, and complex tasks
 
 # Features
@@ -66,7 +66,7 @@ False positives
 False negatives
 
 # Results
-Accuracy: 85%
+Accuracy: 95%
 Cost Reduction: ~34%
 Cache Hit Rate: ~58%
 
