@@ -34,7 +34,7 @@ def run_baseline():
     print(f"Total Latency: {total_latency:.2f}s")
     print(f"Total Cost: ₹{total_cost:.4f}")
 
-    # ✅ THIS IS THE MOST IMPORTANT FIX
+   
     return total_tokens, total_latency, total_cost
 
 

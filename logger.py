@@ -5,9 +5,9 @@ import os
 LOG_FILE = "gateway_logs.json"
 
 
-# -------------------------------
+
 # STEP 1: Append log entry
-# -------------------------------
+
 def append_log(entry: dict):
     try:
         with open(LOG_FILE, "r") as f:
@@ -25,9 +25,9 @@ def append_log(entry: dict):
         json.dump(logs, f, indent=2)
 
 
-# -------------------------------
+
 # STEP 2: Read logs
-# -------------------------------
+
 def read_logs():
     try:
         with open(LOG_FILE, "r") as f:
@@ -36,9 +36,9 @@ def read_logs():
         return []
 
 
-# -------------------------------
+
 # STEP 3: Cache Hit Rate Metric
-# -------------------------------
+
 def compute_cache_hit_rate():
     if not os.path.exists(LOG_FILE):
         print("No logs found.")

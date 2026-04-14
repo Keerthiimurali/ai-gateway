@@ -16,14 +16,14 @@ def run_smart_routing():
         for row in reader:
             prompt = row["prompt"]
 
-            # -----------------------------
+            
             # Step 1: Routing decision
-            # -----------------------------
+            
             decision, reason, confidence, signals = routing_model(prompt)
 
-            # -----------------------------
+           
             # Step 2: Model execution
-            # -----------------------------
+           
             start = time.time()
 
             if decision == "fast":
@@ -33,13 +33,13 @@ def run_smart_routing():
 
             latency = time.time() - start
 
-            # ✅ SAFETY: prevent zero tokens (Gemini failure case)
+            
             if tokens == 0:
                 tokens = len(prompt.split())
 
-            # -----------------------------
+           
             # Step 3: Cost calculation
-            # -----------------------------
+            
             cost = calculate_cost_inr(decision, tokens)
 
             total_tokens += tokens
@@ -60,9 +60,9 @@ def run_smart_routing():
     return total_tokens, total_latency, total_cost
 
 
-# -----------------------------
-# MAIN: Compare with Baseline
-# -----------------------------
+
+#  Compare with Baseline
+
 if __name__ == "__main__":
     from baseline import run_baseline
 
@@ -72,9 +72,7 @@ if __name__ == "__main__":
     print("\n Running SMART ROUTING...\n")
     smart_tokens, smart_latency, smart_cost = run_smart_routing()
 
-    # -----------------------------
-    # SAVINGS CALCULATION (FULL SAFE)
-    # -----------------------------
+    
 
     # Token savings
     if base_tokens == 0:

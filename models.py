@@ -22,9 +22,7 @@ MODELS = {
 }
 }
 
-# -------------------------------
-# FAST MODEL
-# -------------------------------
+
 def call_fast_model(prompt: str):
 
     # Handle very short prompts
@@ -65,9 +63,6 @@ def call_fast_model(prompt: str):
     return text, tokens
 
 
-# -------------------------------
-# CAPABLE MODEL
-# -------------------------------
 def call_capable_model(prompt: str):
 
     url = f"{MODELS['capable']['url']}?key={MODELS['capable']['api_key']}"

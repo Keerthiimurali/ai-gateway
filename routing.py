@@ -1,14 +1,14 @@
 import joblib
 import numpy as np
 
-# -------------------------------
+
 # LOAD TRAINED MODEL
-# -------------------------------
+
 model = joblib.load("routing_model.pkl")
 
-# -------------------------------
+
 # FEATURE DEFINITIONS
-# -------------------------------
+
 COMPLEX_KEYWORDS = [
     "explain", "analyze", "compare", "why", "how",
     "implement", "code", "algorithm", "debug",
@@ -30,10 +30,8 @@ SIMPLE_PATTERNS = [
 # Tuned threshold
 THRESHOLD = 0.65
 
-
-# -------------------------------
 # FEATURE EXTRACTION FUNCTION
-# -------------------------------
+
 def extract_features(prompt: str):
     prompt_lower = prompt.lower()
 
@@ -55,9 +53,8 @@ def extract_features(prompt: str):
     ]
 
 
-# -------------------------------
 # MAIN ROUTING FUNCTION
-# -------------------------------
+
 def routing_model(prompt: str):
     prompt_lower = prompt.lower()
 
@@ -75,20 +72,18 @@ def routing_model(prompt: str):
         prob += 0.05
 
     if keyword_flag:
-        prob += 0.05   # reduced (was 0.08)
+        prob += 0.05   
 
     if code_flag:
-        prob += 0.15   # keep strong
+        prob += 0.15   
 
     if simple_flag:
-        prob -= 0.15   # stronger penalty for simple prompts
+        prob -= 0.15   
 
-    # Clamp probability
+    
     prob = max(0.0, min(prob, 1.0))
 
-    # -------------------------------
-    # STEP 5: SIGNALS (EXPLAINABILITY)
-    # -------------------------------
+   
     signals = []
 
     if word_count > 12:
@@ -108,11 +103,7 @@ def routing_model(prompt: str):
 
     signal_text = ", ".join(signals) if signals else "no strong signals"
 
-    # -------------------------------
-    # STEP 6: CORRECT OVERRIDE LOGIC
-    # -------------------------------
-
-    # ✅ ONLY strict override cases
+  
     if code_flag:
         decision = "capable"
         reason = f"Override → Capable Model (code detected, score={prob:.2f})"
@@ -129,9 +120,7 @@ def routing_model(prompt: str):
         decision = "fast"
         reason = f"Low complexity ({prob:.2f}) → Fast Model ({signal_text})"
 
-    # -------------------------------
-    # STEP 7: CONFIDENCE
-    # -------------------------------
+   
     confidence = prob if decision == "capable" else 1 - prob
 
     return decision, reason, confidence, signals

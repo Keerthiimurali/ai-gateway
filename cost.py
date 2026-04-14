@@ -6,7 +6,7 @@ COST_PER_1K_TOKENS = {
     "capable": 0.002
 }
 
-USD_TO_INR = 83  # conversion rate
+USD_TO_INR = 83  
 
 
 def calculate_cost_inr(model_type, tokens):

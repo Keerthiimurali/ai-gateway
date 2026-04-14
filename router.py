@@ -9,9 +9,7 @@ import time
 
 router = APIRouter()
 
-# -------------------------------
-# Request & Response Models
-# -------------------------------
+
 class ChatRequest(BaseModel):
     prompt: str
 
@@ -31,9 +29,7 @@ class ChatResponse(BaseModel):
     response: str
     metadata: Metadata
 
-# -------------------------------
-# Endpoint
-# -------------------------------
+
 @router.post("/chat", response_model=ChatResponse)
 def chat(request: ChatRequest):
     prompt = request.prompt

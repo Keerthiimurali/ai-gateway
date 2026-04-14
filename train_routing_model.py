@@ -2,9 +2,7 @@ import csv
 import joblib
 from sklearn.linear_model import LogisticRegression
 
-# -------------------------------
-# SAME FEATURE LOGIC AS ROUTING
-# -------------------------------
+
 COMPLEX_KEYWORDS = [
     "explain", "analyze", "compare", "why", "how",
     "implement", "code", "algorithm", "debug",
@@ -23,9 +21,9 @@ SIMPLE_PATTERNS = [
     "how are you", "hello", "hi"
 ]
 
-# -------------------------------
-# FEATURE EXTRACTION (SAME AS ROUTING)
-# -------------------------------
+
+# FEATURE EXTRACTION 
+
 def extract_features(prompt: str):
     prompt_lower = prompt.lower()
 
@@ -46,9 +44,9 @@ def extract_features(prompt: str):
         question_flag
     ]
 
-# -------------------------------
+
 # LOAD DATA
-# -------------------------------
+
 def load_data(file="train_prompts.csv"):
     X, y = [], []
 
@@ -63,9 +61,9 @@ def load_data(file="train_prompts.csv"):
 
     return X, y
 
-# -------------------------------
+
 # TRAIN MODEL
-# -------------------------------
+
 def train_model():
     X, y = load_data()
 
@@ -73,7 +71,7 @@ def train_model():
     model.fit(X, y)
 
     joblib.dump(model, "routing_model.pkl")
-    print("✅ Feature-based routing model trained and saved!")
+    print(" Feature-based routing model trained and saved!")
 
 if __name__ == "__main__":
     train_model()
